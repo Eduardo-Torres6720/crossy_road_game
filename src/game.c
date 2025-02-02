@@ -54,6 +54,9 @@ bool close_window() {
 }
 
 void moviment_chicken() {
+    bool preview_positionx_right = (positionx + CHICKEN_JUMP) >= 864; 
+    bool preview_positionx_left = (positionx - CHICKEN_JUMP) < 0;
+    bool preview_positiony_down = (positiony + CHICKEN_JUMP) >= 900; 
 
     al_wait_for_event(event_queue, &ev);
     if (ev.type == ALLEGRO_EVENT_KEY_DOWN) {
@@ -67,19 +70,20 @@ void moviment_chicken() {
             positiony -= CHICKEN_JUMP;  // Move para cima
             key_pressed = true;
             sprite = al_load_bitmap("../assets/parado_costa.png");
-        } else if (key[ALLEGRO_KEY_DOWN] && !key_pressed) {
+        } else if (key[ALLEGRO_KEY_DOWN] && !key_pressed && !preview_positiony_down) {
             positiony += CHICKEN_JUMP;  // Move para baixo
             key_pressed = true;
             sprite = al_load_bitmap("../assets/parado_frente.png");
-        } else if (key[ALLEGRO_KEY_LEFT] && !key_pressed) {
+        } else if (key[ALLEGRO_KEY_LEFT] && !key_pressed && !preview_positionx_left) {
             positionx -= CHICKEN_JUMP;  // Move para a esquerda
             key_pressed = true;
             sprite = al_load_bitmap("../assets/parado_lado.png");
-        } else if (key[ALLEGRO_KEY_RIGHT] && !key_pressed) {
+        } else if (key[ALLEGRO_KEY_RIGHT] && !key_pressed && !preview_positionx_right) {
             positionx += CHICKEN_JUMP;  // Move para a direita
             key_pressed = true;
             sprite = al_load_bitmap("../assets/parado_lado_direito.png");
         }
+
     }
 
 }
