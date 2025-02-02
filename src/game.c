@@ -66,15 +66,19 @@ void moviment_chicken() {
         if (key[ALLEGRO_KEY_UP] && !key_pressed) {
             positiony -= CHICKEN_JUMP;  // Move para cima
             key_pressed = true;
+            sprite = al_load_bitmap("../assets/parado_costa.png");
         } else if (key[ALLEGRO_KEY_DOWN] && !key_pressed) {
             positiony += CHICKEN_JUMP;  // Move para baixo
             key_pressed = true;
+            sprite = al_load_bitmap("../assets/parado_frente.png");
         } else if (key[ALLEGRO_KEY_LEFT] && !key_pressed) {
             positionx -= CHICKEN_JUMP;  // Move para a esquerda
             key_pressed = true;
+            sprite = al_load_bitmap("../assets/parado_lado.png");
         } else if (key[ALLEGRO_KEY_RIGHT] && !key_pressed) {
             positionx += CHICKEN_JUMP;  // Move para a direita
             key_pressed = true;
+            sprite = al_load_bitmap("../assets/parado_lado_direito.png");
         }
     }
 
