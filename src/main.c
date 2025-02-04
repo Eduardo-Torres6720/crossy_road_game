@@ -21,6 +21,8 @@ int main (){
   draw_sprite();
 
   while(running) {
+    draw_map();
+
     moviment_chicken();
 
     update_window();

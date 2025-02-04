@@ -42,7 +42,6 @@ int al_init_game() {
 }
 
 void update_window() {
-    al_clear_to_color(al_map_rgb(0, 0, 0));
     al_draw_bitmap(sprite, positionx, positiony, 0);  // Desenhar o sprite na nova posição
     al_flip_display();  // Atualizar a tela
 }
