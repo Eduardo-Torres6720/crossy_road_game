@@ -18,7 +18,7 @@ int main (){
     return -1;
   }
 
-  draw_sprite();
+  position_sprite();
 
   while(running) {
     draw_map();
