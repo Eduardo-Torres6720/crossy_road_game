@@ -11,6 +11,12 @@
 
 extern ALLEGRO_BITMAP *gram;
 extern ALLEGRO_BITMAP *road;
+ALLEGRO_TRANSFORM *trans;
+
+extern int positionx;
+extern int positiony;
+
+int cam_y = 0;
 
 int map[MAP_HEIGHT] = {
     1, 1, 2, 2, 1, 2, 2, 1, 1, 2, 2, 2
@@ -33,5 +39,18 @@ void draw_map() {
                 al_draw_bitmap(road, bitmap_x, bitmap_y, 0);
             }
         }
+    }
+}
+
+void display_follow_player() {
+    if(positiony < 96 * 4) {
+        cam_y = 96 + cam_y;
+        positiony = positiony + 96;
+        for(int i = 1; i < MAP_HEIGHT; i++) {
+            map[i - 1] = map[i];
+        }
+        map[11] = 1;
+    } else if (positiony == 96) {
+        cam_y = 0;
     }
 }

@@ -16,6 +16,7 @@ ALLEGRO_EVENT ev;
 
 extern int positionx;
 extern int positiony;
+extern int cam_y;
 
 int al_init_game() {
     //criando o timer

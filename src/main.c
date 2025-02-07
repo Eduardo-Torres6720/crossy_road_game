@@ -27,6 +27,8 @@ int main (){
 
     moviment_chicken();
 
+    display_follow_player();
+
     update_window();
 
     running = close_window();
