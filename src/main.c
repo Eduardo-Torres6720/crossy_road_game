@@ -5,7 +5,9 @@
 #include <allegro5/allegro_image.h>
 
 #include "../include/graphics.h"
+#include "../include/map.h"
 #include "../include/game.h"
+#include "../include/chicken.h"
 
 int main (){
   bool running = true;
@@ -18,7 +20,7 @@ int main (){
     return -1;
   }
 
-  position_sprite();
+  position_chicken();
 
   while(running) {
     draw_map();
