@@ -1,5 +1,7 @@
 #include <allegro5/allegro.h>
 
+#include "../include/chicken.h"
+
 #define DISPLAY_HEIGHT 900
 #define CHICKEN_JUMP 96
 
