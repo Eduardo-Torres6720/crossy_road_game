@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_font.h>
@@ -22,7 +23,10 @@ int main (){
 
   position_chicken();
 
+  srand(time(0));
+
   while(running) {
+    random_map();
     draw_map();
 
     moviment_chicken();

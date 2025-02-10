@@ -11,16 +11,42 @@
 
 extern ALLEGRO_BITMAP *gram;
 extern ALLEGRO_BITMAP *road;
-ALLEGRO_TRANSFORM *trans;
 
 extern int positionx;
 extern int positiony;
+int bitmapType = 2;
+int bitmapPrevious;
+int num = 0;
 
 int cam_y = 0;
 
 int map[MAP_HEIGHT] = {
-    1, 1, 2, 2, 1, 2, 2, 1, 1, 2, 2, 2
+    1, 1
 };
+
+void random_map() {
+    int i;
+
+    if(bitmapType == 1 && num == 0) {
+        num = (rand() % 4)+1;
+        bitmapPrevious = bitmapType;
+        bitmapType = 2;
+        fprintf(stderr, "%da", num);
+    } else if(bitmapType == 2 && num == 0) {
+        num = (rand() % 7)+1;
+        bitmapPrevious = bitmapType;
+        bitmapType = 1;
+        fprintf(stderr, "%db", num);
+    }
+    
+    for(i = 0; i < MAP_HEIGHT; i++) {
+        if(map[i] == 0 && num > 0) {
+            map[i] = bitmapPrevious;
+            num = num - 1;
+        }
+    }
+          
+}
 
 
 void draw_map() {
@@ -49,7 +75,7 @@ void display_follow_player() {
         for(int i = 1; i < MAP_HEIGHT; i++) {
             map[i - 1] = map[i];
         }
-        map[11] = 1;
+        map[11] = 0;
     } else if (positiony == 96) {
         cam_y = 0;
     }

@@ -3,6 +3,8 @@
 
 void draw_map();
 
+void random_map();
+
 void display_follow_player();
 
 #endif
