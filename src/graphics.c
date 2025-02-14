@@ -11,6 +11,7 @@ ALLEGRO_DISPLAY *display;
 ALLEGRO_BITMAP *chicken;
 ALLEGRO_BITMAP *gram;
 ALLEGRO_BITMAP *road;
+ALLEGRO_BITMAP *car[6];
 
 int positionx;
 int positiony;
@@ -25,6 +26,12 @@ int al_init_graphics() {
         chicken = al_load_bitmap("../assets/parado_costa.png");
         gram = al_load_bitmap("../assets/grama.png");
         road = al_load_bitmap("../assets/estrada.png");
+        car[0] = al_load_bitmap("../assets/carro_azul.png");
+        car[1] = al_load_bitmap("../assets/carro_azul_lado.png");
+        car[2] = al_load_bitmap("../assets/carro_verde.png");
+        car[3] = al_load_bitmap("../assets/carro_verde_lado.png");
+        car[4] = al_load_bitmap("../assets/carro_laranja.png");
+        car[5] = al_load_bitmap("../assets/carro_laranja_lado.png");
         return 0;
     }
 }

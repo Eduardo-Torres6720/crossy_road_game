@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include "../include/map.h"
+#include "../include/car.h"
 
 #define MAP_HEIGHT 12
 #define MAP_WIDTH 9
@@ -11,9 +12,14 @@
 
 extern ALLEGRO_BITMAP *gram;
 extern ALLEGRO_BITMAP *road;
+extern ALLEGRO_BITMAP *car;
 
 extern int positionx;
 extern int positiony;
+extern int positiony_car;
+
+extern Car cars[MAP_HEIGHT];
+
 int bitmapType = 2;
 int bitmapPrevious;
 int num = 0;
@@ -63,6 +69,8 @@ void draw_map() {
                 al_draw_bitmap(gram, bitmap_x, bitmap_y, 0);
             } else if (bitmap_id == 2) {
                 al_draw_bitmap(road, bitmap_x, bitmap_y, 0);
+                cars[y].position_y = bitmap_y;
+                cars[y].exists = true;
             }
         }
     }
@@ -74,8 +82,14 @@ void display_follow_player() {
         positiony = positiony + 96;
         for(int i = 1; i < MAP_HEIGHT; i++) {
             map[i - 1] = map[i];
+            cars[i - 1] = cars[i];
+            if(cars[i].exists) {
+                cars[i].position_y += 96;
+            } 
         }
         map[11] = 0;
+        cars[11].exists = false;
+        cars[11].defined_values = false;
     } else if (positiony == 96) {
         cam_y = 0;
     }

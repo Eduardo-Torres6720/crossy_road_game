@@ -9,6 +9,7 @@
 #include "../include/map.h"
 #include "../include/game.h"
 #include "../include/chicken.h"
+#include "../include/car.h"
 
 int main (){
   bool running = true;
@@ -29,10 +30,12 @@ int main (){
     random_map();
     draw_map();
 
+    handle_car();
+
     moviment_chicken();
-
+    
     display_follow_player();
-
+    
     update_window();
 
     running = close_window();
