@@ -2,7 +2,6 @@
 #define CAR_H
 
 typedef struct {
-    int frequency;
     ALLEGRO_BITMAP *car_model;
     int initial_x;
     int cpy_initial_x;
@@ -15,10 +14,10 @@ typedef struct {
 
 void handle_car();
 
-void set_car(int i);
+void set_car(int i, int j);
 
-void move_car(int i);
+void move_car(int i, int j);
 
-void loop_car(int i);
+void loop_car(int i, int j);
 
 #endif

@@ -18,7 +18,7 @@ extern int positionx;
 extern int positiony;
 extern int positiony_car;
 
-extern Car cars[MAP_HEIGHT];
+extern Car cars[MAP_HEIGHT][3];
 
 int bitmapType = 2;
 int bitmapPrevious;
@@ -61,16 +61,21 @@ void draw_map() {
 
     for (int y = 0; y < MAP_HEIGHT; y++) {
         int bitmap_id = map[y]; // id do bitmap a matriz          
+        int bitmap_y = DISPLAY_HEIGHT - ((y+1) * bitmap_height); // Posição y do bitmap na tela
         for (int x = 0; x < MAP_WIDTH; x++) {
             int bitmap_x = x * bitmap_width; // Posição x do bitmap na tela
-            int bitmap_y = DISPLAY_HEIGHT - ((y+1) * bitmap_height); // Posição y do bitmap na tela
 
             if (bitmap_id == 1) {
                 al_draw_bitmap(gram, bitmap_x, bitmap_y, 0);
             } else if (bitmap_id == 2) {
                 al_draw_bitmap(road, bitmap_x, bitmap_y, 0);
-                cars[y].position_y = bitmap_y;
-                cars[y].exists = true;
+            }
+        }
+        int random_number_car = (rand() % 3) + 1;
+        if (bitmap_id == 2 && !cars[y][0].exists) {
+        for (int i=0; i<random_number_car; i++) {
+                cars[y][i].position_y = bitmap_y;
+                cars[y][i].exists = true;
             }
         }
     }
@@ -82,14 +87,18 @@ void display_follow_player() {
         positiony = positiony + 96;
         for(int i = 1; i < MAP_HEIGHT; i++) {
             map[i - 1] = map[i];
-            cars[i - 1] = cars[i];
-            if(cars[i].exists) {
-                cars[i].position_y += 96;
-            } 
+            for(int j=0; j<3; j++) {
+                cars[i - 1][j] = cars[i][j];
+                if(cars[i-1][j].exists) {
+                    cars[i-1][j].position_y = 96 + cars[i-1][j].position_y;
+                } 
+            }
         }
         map[11] = 0;
-        cars[11].exists = false;
-        cars[11].defined_values = false;
+        for(int j=0; j<3; j++) {
+            cars[11][j].exists = false;
+            cars[11][j].defined_values = false;
+        }
     } else if (positiony == 96) {
         cam_y = 0;
     }
