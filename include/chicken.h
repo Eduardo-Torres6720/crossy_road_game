@@ -4,7 +4,8 @@
 typedef struct {
     int positionx;
     int positiony;
-    int movement_performed;
+    int movement_performed_x;
+    int movement_performed_y;
     ALLEGRO_BITMAP *sprite_chicken;
 } Chicken;
 
