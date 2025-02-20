@@ -11,7 +11,7 @@ extern ALLEGRO_BITMAP *car[6];
 Car cars[12][3];
 
 void move_car(int i, int j) {
-    cars[i][j].initial_x = cars[i][j].direction == 0 ? cars[i][j].initial_x + 2 : cars[i][j].initial_x - 2;
+    cars[i][j].initial_x = cars[i][j].direction == 0 ? cars[i][j].initial_x + cars[i][j].velocity : cars[i][j].initial_x - cars[i][j].velocity;
 }
 
 void set_car(int i, int j) {
@@ -20,18 +20,21 @@ void set_car(int i, int j) {
     int random_initial_x;
     int random_final_x;
     int random_cpy_x;
+    int random_velocity;
 
     if (j == 0) {
         random_direction = rand() % 2;
         random_initial_x = random_direction == 0 ? -1 * (rand() % 800) - 100 : (rand() % 320) + 900;
         random_final_x = random_direction == 0 ? (rand() % 320) + 900 : -1 * (rand() % 800) - 100;
         random_cpy_x = random_initial_x;
+        random_velocity = (rand() % 4) + 2;
     } else {
         random_direction = cars[i][j-1].direction;
         int random_distance = (rand() % 300) + 200;
         random_initial_x = random_direction == 0 ? cars[i][j-1].initial_x - random_distance : cars[i][j-1].initial_x + random_distance;
         random_cpy_x = cars[i][j-1].cpy_initial_x;
         random_final_x = cars[i][j-1].final_x;
+        random_velocity = cars[i][j-1].velocity;
     }
     random_model_car = random_direction == 0 ? (rand() % 3) * 2 : (rand() % 3) * 2 + 1;
 
@@ -40,6 +43,7 @@ void set_car(int i, int j) {
     cars[i][j].cpy_initial_x = random_cpy_x;
     cars[i][j].final_x = random_final_x;
     cars[i][j].direction = random_direction;
+    cars[i][j].velocity = random_velocity;
     cars[i][j].defined_values = true;
 }
 

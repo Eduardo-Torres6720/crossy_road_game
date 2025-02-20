@@ -8,6 +8,7 @@ typedef struct {
     int final_x;
     int position_y;
     int direction;
+    int velocity;
     bool exists;
     bool defined_values;
 } Car;
