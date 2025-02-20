@@ -12,6 +12,7 @@ ALLEGRO_BITMAP *chicken;
 ALLEGRO_BITMAP *gram;
 ALLEGRO_BITMAP *road;
 ALLEGRO_BITMAP *car[6];
+ALLEGRO_BITMAP *tree;
 
 int positionx;
 int positiony;
@@ -26,6 +27,7 @@ int al_init_graphics() {
         chicken = al_load_bitmap("../assets/parado_costa.png");
         gram = al_load_bitmap("../assets/grama.png");
         road = al_load_bitmap("../assets/estrada.png");
+        tree = al_load_bitmap("../assets/arvore.png");
         car[0] = al_load_bitmap("../assets/carro_azul.png");
         car[1] = al_load_bitmap("../assets/carro_azul_lado.png");
         car[2] = al_load_bitmap("../assets/carro_verde.png");

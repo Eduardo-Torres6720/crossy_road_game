@@ -12,6 +12,7 @@ extern ALLEGRO_EVENT ev;
 
 extern int positionx;
 extern int positiony;
+int moviment_performed;
 bool key[ALLEGRO_KEY_MAX] = {false};
 
 bool key_pressed = false;
@@ -48,10 +49,12 @@ void moviment_chicken() {
         } else if (key[ALLEGRO_KEY_LEFT] && !key_pressed && !preview_positionx_left) {
             positionx -= CHICKEN_JUMP;  // Move para a esquerda
             key_pressed = true;
+            moviment_performed = -CHICKEN_JUMP;
             chicken = al_load_bitmap("../assets/parado_lado.png");
         } else if (key[ALLEGRO_KEY_RIGHT] && !key_pressed && !preview_positionx_right) {
             positionx += CHICKEN_JUMP;  // Move para a direita
             key_pressed = true;
+            moviment_performed = CHICKEN_JUMP;
             chicken = al_load_bitmap("../assets/parado_lado_direito.png");
         }
 

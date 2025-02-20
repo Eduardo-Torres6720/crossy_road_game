@@ -5,6 +5,7 @@
 
 #include "../include/map.h"
 #include "../include/car.h"
+#include "../include/tree.h"
 
 #define MAP_HEIGHT 12
 #define MAP_WIDTH 9
@@ -13,16 +14,18 @@
 extern ALLEGRO_BITMAP *gram;
 extern ALLEGRO_BITMAP *road;
 extern ALLEGRO_BITMAP *car;
+extern ALLEGRO_BITMAP *tree;
 
 extern int positionx;
 extern int positiony;
 extern int positiony_car;
 
 extern Car cars[MAP_HEIGHT][3];
+extern Tree trees[MAP_HEIGHT][2];
 
-int bitmapType = 2;
-int bitmapPrevious;
-int num = 0;
+int bitmapType = 2; // inicia como estrada
+int bitmapPrevious; // observa o ultimo valor do bitmapType
+int num = 0; // variavel para guardar numeros aleatorios
 
 int cam_y = 0;
 
@@ -67,6 +70,12 @@ void draw_map() {
 
             if (bitmap_id == 1) {
                 al_draw_bitmap(gram, bitmap_x, bitmap_y, 0);
+                if (x == 0 || x == 8) {
+                    trees[y][x/8].initial_x = bitmap_x;
+                    trees[y][x/8].final_x = bitmap_x+bitmap_width;
+                    trees[y][x/8].position_y = bitmap_y;
+                    al_draw_bitmap(tree, bitmap_x, bitmap_y, 0);
+                }
             } else if (bitmap_id == 2) {
                 al_draw_bitmap(road, bitmap_x, bitmap_y, 0);
             }
@@ -92,6 +101,9 @@ void display_follow_player() {
                 if(cars[i-1][j].exists) {
                     cars[i-1][j].position_y = 96 + cars[i-1][j].position_y;
                 } 
+            }
+            for(int j=0; j<2; j++) {
+                trees[i-1][j] = trees[i][j];
             }
         }
         map[11] = 0;

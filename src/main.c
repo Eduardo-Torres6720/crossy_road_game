@@ -10,6 +10,7 @@
 #include "../include/game.h"
 #include "../include/chicken.h"
 #include "../include/car.h"
+#include "../include/tree.h"
 
 int main (){
   bool running = true;
@@ -33,6 +34,8 @@ int main (){
     handle_car();
 
     moviment_chicken();
+
+    colision_tree();
     
     display_follow_player();
     
