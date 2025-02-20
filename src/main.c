@@ -23,7 +23,7 @@ int main (){
     return -1;
   }
 
-  position_chicken();
+  set_chicken();
 
   srand(time(0));
 

@@ -6,6 +6,7 @@
 #include "../include/map.h"
 #include "../include/car.h"
 #include "../include/tree.h"
+#include "../include/chicken.h"
 
 #define MAP_HEIGHT 12
 #define MAP_WIDTH 9
@@ -16,12 +17,11 @@ extern ALLEGRO_BITMAP *road;
 extern ALLEGRO_BITMAP *car;
 extern ALLEGRO_BITMAP *tree;
 
-extern int positionx;
-extern int positiony;
 extern int positiony_car;
 
 extern Car cars[MAP_HEIGHT][3];
 extern Tree trees[MAP_HEIGHT][2];
+extern Chicken chicken_struct;
 
 int bitmapType = 2; // inicia como estrada
 int bitmapPrevious; // observa o ultimo valor do bitmapType
@@ -91,9 +91,9 @@ void draw_map() {
 }
 
 void display_follow_player() {
-    if(positiony < 96 * 4) {
+    if(chicken_struct.positiony < 96 * 4) {
         cam_y = 96 + cam_y;
-        positiony = positiony + 96;
+        chicken_struct.positiony = chicken_struct.positiony + 96;
         for(int i = 1; i < MAP_HEIGHT; i++) {
             map[i - 1] = map[i];
             for(int j=0; j<3; j++) {
@@ -111,7 +111,7 @@ void display_follow_player() {
             cars[11][j].exists = false;
             cars[11][j].defined_values = false;
         }
-    } else if (positiony == 96) {
+    } else if (chicken_struct.positiony == 96) {
         cam_y = 0;
     }
 }

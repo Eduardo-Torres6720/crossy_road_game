@@ -3,17 +3,16 @@
 #include <stdio.h>
 
 #include "../include/tree.h"
+#include "../include/chicken.h"
 
-extern int positionx;
-extern int positiony;
-extern int moviment_performed;
+extern Chicken chicken_struct;
 Tree trees[12][2];
 
 void colision_tree() {
     for(int i=0; i<12; i++) {
         for(int j=0; j<2; j++) {
-            if(positionx < trees[i][j].final_x && positionx >= trees[i][j].initial_x && trees[i][j].position_y == positiony) {
-                positionx = positionx - moviment_performed;
+            if(chicken_struct.positionx < trees[i][j].final_x && chicken_struct.positionx >= trees[i][j].initial_x && trees[i][j].position_y == chicken_struct.positiony) {
+                chicken_struct.positionx = chicken_struct.positionx - chicken_struct.movement_performed;
             } 
         }
     }

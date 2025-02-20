@@ -4,19 +4,17 @@
 #include <allegro5/allegro_image.h>
 
 #include "../include/game.h"
+#include "../include/chicken.h"
 
 #define CHICKEN_JUMP 96
 
 ALLEGRO_EVENT_QUEUE *event_queue;
 ALLEGRO_TIMER *timer;
 extern ALLEGRO_DISPLAY *display;
-extern ALLEGRO_BITMAP *chicken;
 
 ALLEGRO_EVENT ev;
 
-extern int positionx;
-extern int positiony;
-extern int cam_y;
+extern Chicken chicken_struct;
 
 int al_init_game() {
     //criando o timer
@@ -40,7 +38,7 @@ int al_init_game() {
 }
 
 void update_window() {
-    al_draw_bitmap(chicken, positionx, positiony, 0);  // Desenhar o sprite na nova posição
+    al_draw_bitmap(chicken_struct.sprite_chicken, chicken_struct.positionx, chicken_struct.positiony, 0);  // Desenhar o sprite na nova posição
     al_flip_display();  // Atualizar a tela
 }
 
