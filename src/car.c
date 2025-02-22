@@ -11,7 +11,26 @@ extern ALLEGRO_BITMAP *car[6];
 
 extern Chicken chicken_struct;
 
+extern int map[12];
+
 Car cars[12][3];
+
+void reset() {
+
+    // Resetando a posição da galinha
+    set_chicken(); 
+
+    // Resetando os carros
+    for (int i = 0; i < MAP_HEIGHT; i++) {
+        for (int j = 0; j < 3; j++) {
+            cars[i][j].exists = false;    
+            cars[i][j].defined_values = false; 
+        }
+    }
+    for (int i = 0; i < MAP_HEIGHT; i++) {
+        map[i] = (i < 2) ? 1 : 0;  
+    }
+}
 
 
 void move_car(int i, int j) {
@@ -87,7 +106,9 @@ void loop_car(int i, int j) {
 // colisão entre galinha e o carro
 void colision_car(int i, int j) {
     if(cars[i][j].position_x_inicial <= chicken_struct.positionx + 96/2 && cars[i][j].position_x_final >= chicken_struct.positionx + 96/2 && chicken_struct.positiony == cars[i][j].position_y) {
-   
+  
+        reset();
     }
 }
+
 
