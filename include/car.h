@@ -11,6 +11,8 @@ typedef struct {
     int velocity;
     bool exists;
     bool defined_values;
+    int position_x_inicial;
+    int position_x_final;
 } Car;
 
 void handle_car();
@@ -20,5 +22,7 @@ void set_car(int i, int j);
 void move_car(int i, int j);
 
 void loop_car(int i, int j);
+
+void colision_car(int i, int j);
 
 #endif

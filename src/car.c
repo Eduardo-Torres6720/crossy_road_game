@@ -3,15 +3,21 @@
 #include <stdlib.h>
 
 #include "../include/car.h"
+#include "../include/chicken.h"
 
 #define MAP_HEIGHT 12
 
 extern ALLEGRO_BITMAP *car[6];
 
+extern Chicken chicken_struct;
+
 Car cars[12][3];
+
 
 void move_car(int i, int j) {
     cars[i][j].initial_x = cars[i][j].direction == 0 ? cars[i][j].initial_x + cars[i][j].velocity : cars[i][j].initial_x - cars[i][j].velocity;
+    cars[i][j].position_x_inicial = cars[i][j].direction == 0 ? cars[i][j].position_x_inicial + cars[i][j].velocity : cars[i][j].position_x_inicial - cars[i][j].velocity;
+    cars[i][j].position_x_final = cars[i][j].direction == 0 ? cars[i][j].position_x_final + cars[i][j].velocity : cars[i][j].position_x_final - cars[i][j].velocity;
 }
 
 void set_car(int i, int j) {
@@ -45,6 +51,8 @@ void set_car(int i, int j) {
     cars[i][j].direction = random_direction;
     cars[i][j].velocity = random_velocity;
     cars[i][j].defined_values = true;
+    cars[i][j].position_x_inicial = cars[i][j].initial_x;
+    cars[i][j].position_x_final = cars[i][j].initial_x + 96;
 }
 
 void handle_car() {
@@ -55,6 +63,7 @@ void handle_car() {
                 set_car(i, j);
             } else if (cars[i][j].exists) {
                 al_draw_bitmap(cars[i][j].car_model, cars[i][j].initial_x, cars[i][j].position_y, 0);
+                colision_car(i, j);
                 move_car(i, j);
                 loop_car(i, j);
             }   
@@ -66,7 +75,19 @@ void handle_car() {
 void loop_car(int i, int j) {
     if(cars[i][j].initial_x >= cars[i][j].final_x && cars[i][j].direction == 0) {
         cars[i][j].initial_x = cars[i][j].cpy_initial_x;
+        cars[i][j].position_x_inicial = cars[i][j].initial_x;
+        cars[i][j].position_x_final = cars[i][j].initial_x + 96;
     } else if(cars[i][j].initial_x <= cars[i][j].final_x && cars[i][j].direction == 1) {
         cars[i][j].initial_x = cars[i][j].cpy_initial_x;
+        cars[i][j].position_x_inicial = cars[i][j].initial_x;
+        cars[i][j].position_x_final = cars[i][j].initial_x + 96;
     }
 }
+
+// colisão entre galinha e o carro
+void colision_car(int i, int j) {
+    if(cars[i][j].position_x_inicial <= chicken_struct.positionx + 96/2 && cars[i][j].position_x_final >= chicken_struct.positionx + 96/2 && chicken_struct.positiony == cars[i][j].position_y) {
+   
+    }
+}
+
