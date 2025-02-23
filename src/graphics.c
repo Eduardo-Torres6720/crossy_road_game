@@ -13,6 +13,7 @@ ALLEGRO_BITMAP *gram;
 ALLEGRO_BITMAP *road;
 ALLEGRO_BITMAP *car[6];
 ALLEGRO_BITMAP *tree;
+ALLEGRO_BITMAP *water;
 
 int positionx;
 int positiony;
@@ -34,6 +35,7 @@ int al_init_graphics() {
         car[3] = al_load_bitmap("../assets/carro_verde_lado.png");
         car[4] = al_load_bitmap("../assets/carro_laranja.png");
         car[5] = al_load_bitmap("../assets/carro_laranja_lado.png");
+        water = al_load_bitmap("../assets/rio.png");
         return 0;
     }
 }
@@ -43,4 +45,5 @@ void cleanup_display() {
     al_destroy_display(display);
     al_destroy_bitmap(gram);
     al_destroy_bitmap(road);
+    al_destroy_bitmap(water);
 }
