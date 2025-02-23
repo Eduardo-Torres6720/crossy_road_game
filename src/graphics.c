@@ -14,6 +14,7 @@ ALLEGRO_BITMAP *road;
 ALLEGRO_BITMAP *car[6];
 ALLEGRO_BITMAP *tree;
 ALLEGRO_BITMAP *water;
+ALLEGRO_BITMAP *tronco;
 
 int positionx;
 int positiony;
@@ -36,6 +37,7 @@ int al_init_graphics() {
         car[4] = al_load_bitmap("../assets/carro_laranja.png");
         car[5] = al_load_bitmap("../assets/carro_laranja_lado.png");
         water = al_load_bitmap("../assets/rio.png");
+        tronco = al_load_bitmap("../assets/tronco.png");
         return 0;
     }
 }
