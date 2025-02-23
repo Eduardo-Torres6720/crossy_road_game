@@ -4,10 +4,11 @@
 typedef struct {
     int positionx;
     int positiony;
+    bool on_log;
     int movement_performed_x;
     int movement_performed_y;
-    int points; // QUANDO RESETAR A GALINHA, VOCÊ PRECISA ZERAR ISSO
-    int step_control; // QUANDO RESETAR A GALINHA, VOCÊ PRECISA ZERAR ISSO
+    int points;
+    int step_control;
     ALLEGRO_BITMAP *sprite_chicken;
 } Chicken;
 

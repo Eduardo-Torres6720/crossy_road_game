@@ -116,6 +116,21 @@ void draw_map() {
             }
             al_draw_bitmap(tronco, logs[y].initial_x, bitmap_y, 0);
             move_log(&logs[y]);
+
+            // Adicionar verificação para a colisão da galinha com o tronco
+            if (chicken_struct.positiony == bitmap_y) {
+                if (logs[y].initial_x <= chicken_struct.positionx && chicken_struct.positionx <= logs[y].initial_x + 96) {
+                    // A galinha está sobre o tronco, então ela se move com ele
+                    chicken_struct.positionx += logs[y].velocity;
+
+                    // Impedir que a galinha ultrapasse a borda
+                    if (chicken_struct.positionx < 0) {
+                        chicken_struct.positionx = 0;
+                    } else if (chicken_struct.positionx > 96 * (MAP_WIDTH - 1)) {
+                        chicken_struct.positionx = 96 * (MAP_WIDTH - 1);
+                    }
+                }
+            }
         }
 
         int random_number_car = (rand() % 3) + 1;
@@ -133,6 +148,7 @@ void display_follow_player() {
     if(chicken_struct.positiony < 96 * 4) {
         cam_y = 96 + cam_y;
         chicken_struct.positiony = chicken_struct.positiony + 96;
+
         for(int i = 1; i < MAP_HEIGHT; i++) {
             map[i - 1] = map[i];
             for(int j=0; j<3; j++) {
@@ -144,7 +160,14 @@ void display_follow_player() {
             for(int j=0; j<2; j++) {
                 trees[i-1][j] = trees[i][j];
             }
+
+            // Atualizando troncos, se houver água na linha
+            if (map[i - 1] == 3) { // Se for água
+                logs[i - 1] = logs[i]; // Mover troncos para a linha anterior
+            }
         }
+
+        // Limpar a última linha
         map[11] = 0;
         for(int j=0; j<3; j++) {
             cars[11][j].exists = false;
