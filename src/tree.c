@@ -18,3 +18,14 @@ void colision_tree() {
         }
     }
 }
+
+bool detect_colision_tree() {
+    for(int i=0; i<12; i++) {
+        for(int j=0; j<2; j++) {
+            if(chicken_struct.positionx < trees[i][j].final_x && chicken_struct.positionx >= trees[i][j].initial_x && trees[i][j].position_y == chicken_struct.positiony) {
+                return true;
+            } 
+        }
+    }
+    return false;
+}

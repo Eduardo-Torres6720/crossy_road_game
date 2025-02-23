@@ -1,6 +1,8 @@
 #include <allegro5/allegro.h>
+#include <stdio.h>
 
 #include "../include/chicken.h"
+#include "../include/tree.h"
 
 #define DISPLAY_HEIGHT 900
 #define CHICKEN_JUMP 96
@@ -16,6 +18,16 @@ bool key[ALLEGRO_KEY_MAX] = {false};
 
 bool key_pressed = false;
 
+void print_y() {
+    printf("%d %d \n", chicken_struct.points, chicken_struct.step_control);
+}
+
+void update_points() {
+    if (chicken_struct.step_control > chicken_struct.points) {
+        chicken_struct.points = chicken_struct.step_control;
+    }
+}
+
 void set_chicken() {
     int chicken_width = al_get_bitmap_width(chicken);
     int chicken_height = al_get_bitmap_height(chicken);
@@ -28,6 +40,7 @@ void set_chicken() {
 }
 
 void moviment_chicken() {
+
     chicken_struct.movement_performed_x = 0;
     chicken_struct.movement_performed_y = 0;
 
@@ -43,16 +56,29 @@ void moviment_chicken() {
             key_pressed = false;
     } else if (ev.type == ALLEGRO_EVENT_TIMER) {
         // Mover o sprite com base nas teclas pressionadas
+
+
+
         if (key[ALLEGRO_KEY_UP] && !key_pressed) {
             chicken_struct.positiony -= CHICKEN_JUMP;  // Move para cima
             key_pressed = true;
             chicken_struct.sprite_chicken = al_load_bitmap("../assets/parado_costa.png");
             chicken_struct.movement_performed_y = -CHICKEN_JUMP;
+
+            if (!detect_colision_tree()) {
+                chicken_struct.step_control++; // Incrementa o step_control pq vai funcionar, confia
+            }
+
         } else if (key[ALLEGRO_KEY_DOWN] && !key_pressed && !preview_positiony_down) {
             chicken_struct.positiony += CHICKEN_JUMP;  // Move para baixo
             key_pressed = true;
             chicken_struct.sprite_chicken = al_load_bitmap("../assets/parado_frente.png");
             chicken_struct.movement_performed_y = CHICKEN_JUMP;
+
+            if (!detect_colision_tree()) {
+                chicken_struct.step_control--; // Decrementa o step_control pq vai funcionar, confia
+            }
+
         } else if (key[ALLEGRO_KEY_LEFT] && !key_pressed && !preview_positionx_left) {
             chicken_struct.positionx -= CHICKEN_JUMP;  // Move para a esquerda
             key_pressed = true;
@@ -65,6 +91,17 @@ void moviment_chicken() {
             chicken_struct.sprite_chicken = al_load_bitmap("../assets/parado_lado_direito.png");
         }
 
+        update_points(); // Isso vai atualizar a pontuação. Tenha fé em Deus!
+
     }
 
+}
+
+int return_points() {
+    return chicken_struct.points;
+}
+
+void verify_reset() {
+    chicken_struct.points = 0;
+    chicken_struct.step_control = 0;
 }
