@@ -46,7 +46,7 @@ void random_map() {
 
     if (bitmapType == 1 && num == 0) { 
         int progress_gram = dificult_progress(4);
-        num = (rand() % 7) + 5-progress_gram;
+        num = (rand() % 4) + 5-progress_gram;
         bitmapPrevious = bitmapType;
         bitmapType = 2; 
         fprintf(stderr, "%da", num);
@@ -56,18 +56,20 @@ void random_map() {
         int chance = rand() % 4;
 
         if (chance == 0) { 
-            num = (rand() % 2) + 1;
+            int progress_river = dificult_progress(3);
+            num = (rand() % 2) + 1 + progress_river;
             bitmapPrevious = bitmapType;
             bitmapType = 3;
         } else { 
-            num = (rand() % 4) + 1;
+            int progress_road = dificult_progress(6);
+            num = (rand() % 4)+1+progress_road;
             bitmapPrevious = bitmapType;
             bitmapType = 1; 
         }
         fprintf(stderr, "%db", num);
     }
     else if (bitmapType == 3 && num == 0) { 
-        num = (rand() % 4) + 1;
+        num = (rand() % 4) + 1 >= 2 ? 2 : 1;
         bitmapPrevious = bitmapType;
         bitmapType = 1; 
         fprintf(stderr, "%dc", num);
@@ -75,14 +77,6 @@ void random_map() {
 
     if (bitmapType == 3 && bitmapPrevious == 1) {
         bitmapType = 1;
-    }
-
-    if (bitmapPrevious == 3 && num > 2) {
-        num = 2;
-    }
-
-    if (bitmapPrevious == 1 && num > 4) {
-        num = 4;
     }
 
     for (i = 0; i < MAP_HEIGHT; i++) {
