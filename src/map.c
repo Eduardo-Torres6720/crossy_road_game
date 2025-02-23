@@ -16,6 +16,8 @@ extern ALLEGRO_BITMAP *gram;
 extern ALLEGRO_BITMAP *road;
 extern ALLEGRO_BITMAP *car;
 extern ALLEGRO_BITMAP *tree;
+extern ALLEGRO_BITMAP *scoreboard;
+
 
 extern int positiony_car;
 

@@ -11,6 +11,7 @@
 #include "../include/chicken.h"
 #include "../include/car.h"
 #include "../include/tree.h"
+#include "../include/scoreboard.h"
 
 int main (){
   bool running = true;
@@ -24,6 +25,7 @@ int main (){
   }
 
   set_chicken();
+  start_scoreboard();
 
   srand(time(0));
 
@@ -38,8 +40,15 @@ int main (){
     colision_tree();
     
     display_follow_player();
+
+    int points = return_points();
+
+    render_score(points, 0, 0); // Você pode alterar esses números pra trocar a posição
     
     update_window();
+
+    print_y();
+
 
     running = close_window();
   }
