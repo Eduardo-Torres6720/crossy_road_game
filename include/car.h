@@ -23,6 +23,6 @@ void move_car(int i, int j);
 
 void loop_car(int i, int j);
 
-void colision_car(int i, int j);
+void colision_car(int* i, int* j);
 
 #endif

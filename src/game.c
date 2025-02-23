@@ -5,8 +5,10 @@
 
 #include "../include/game.h"
 #include "../include/chicken.h"
+#include "../include/car.h"
 
 #define CHICKEN_JUMP 96
+#define MAP_HEIGHT 12
 
 ALLEGRO_EVENT_QUEUE *event_queue;
 ALLEGRO_TIMER *timer;
@@ -15,6 +17,10 @@ extern ALLEGRO_DISPLAY *display;
 ALLEGRO_EVENT ev;
 
 extern Chicken chicken_struct;
+extern Car cars[MAP_HEIGHT][3];
+extern int bitmapType;
+extern int num;
+extern int map[MAP_HEIGHT];
 
 int al_init_game() {
     //criando o timer
@@ -40,6 +46,23 @@ int al_init_game() {
 void update_window() {
     al_draw_bitmap(chicken_struct.sprite_chicken, chicken_struct.positionx, chicken_struct.positiony, 0);  // Desenhar o sprite na nova posição
     al_flip_display();  // Atualizar a tela
+}
+
+void reset() {
+
+    // Resetando a posição da galinha
+    set_chicken(); 
+
+    // Resetando os carros
+    for (int i = 0; i < MAP_HEIGHT; i++) {
+        for (int j = 0; j < 3; j++) {
+            cars[i][j].defined_values = false;
+            cars[i][j].exists = false;    
+        }
+        map[i] = (i < 2) ? 1 : 0;  
+    }
+    bitmapType = 2;
+    num = 0;
 }
 
 bool close_window() {
