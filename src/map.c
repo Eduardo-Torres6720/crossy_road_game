@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 #include "../include/map.h"
 #include "../include/car.h"
@@ -35,16 +36,22 @@ int map[MAP_HEIGHT] = {
     1, 1
 };
 
+int dificult_progress(int limit_progress) {
+    return ceil(chicken_struct.points/30)<=limit_progress ? ceil(chicken_struct.points/30) : limit_progress;
+}
+
 void random_map() {
     int i;
 
     if(bitmapType == 1 && num == 0) {
-        num = (rand() % 4)+1;
+        int progress_gram = dificult_progress(4);
+        num = (rand() % 4)+5-progress_gram;
         bitmapPrevious = bitmapType;
         bitmapType = 2;
         fprintf(stderr, "%da", num);
     } else if(bitmapType == 2 && num == 0) {
-        num = (rand() % 7)+1;
+        int progress_road = dificult_progress(6);
+        num = (rand() % 4)+1+progress_road;
         bitmapPrevious = bitmapType;
         bitmapType = 1;
         fprintf(stderr, "%db", num);
