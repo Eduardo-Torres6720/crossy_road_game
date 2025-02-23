@@ -14,6 +14,7 @@ extern Chicken chicken_struct;
 
 Car cars[12][3];
 
+
 void move_car(int i, int j) {
     cars[i][j].initial_x = cars[i][j].direction == 0 ? cars[i][j].initial_x + cars[i][j].velocity : cars[i][j].initial_x - cars[i][j].velocity;
     cars[i][j].position_x_inicial = cars[i][j].direction == 0 ? cars[i][j].position_x_inicial + cars[i][j].velocity : cars[i][j].position_x_inicial - cars[i][j].velocity;
