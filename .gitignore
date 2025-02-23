@@ -1,2 +1,4 @@
-.vscode
-bin
+*.exe
+bin/
+.vscode/
+gcc
