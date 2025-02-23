@@ -18,10 +18,6 @@ bool key[ALLEGRO_KEY_MAX] = {false};
 
 bool key_pressed = false;
 
-void print_y() {
-    printf("%d %d \n", chicken_struct.points, chicken_struct.step_control);
-}
-
 void update_points() {
     if (chicken_struct.step_control > chicken_struct.points) {
         chicken_struct.points = chicken_struct.step_control;

@@ -47,8 +47,6 @@ int main (){
     
     update_window();
 
-    print_y();
-
 
     running = close_window();
   }

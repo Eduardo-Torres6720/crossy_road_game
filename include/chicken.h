@@ -15,8 +15,6 @@ void set_chicken();
 
 void moviment_chicken();
 
-void print_y();
-
 bool detect_colision_tree();
 
 int return_points();
