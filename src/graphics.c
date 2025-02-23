@@ -13,6 +13,7 @@ ALLEGRO_BITMAP *gram;
 ALLEGRO_BITMAP *road;
 ALLEGRO_BITMAP *car[6];
 ALLEGRO_BITMAP *tree;
+ALLEGRO_BITMAP *numbers[10];
 
 int positionx;
 int positiony;
@@ -34,7 +35,21 @@ int al_init_graphics() {
         car[3] = al_load_bitmap("../assets/carro_verde_lado.png");
         car[4] = al_load_bitmap("../assets/carro_laranja.png");
         car[5] = al_load_bitmap("../assets/carro_laranja_lado.png");
+        load_numbers();
         return 0;
+    }
+}
+
+void load_numbers() {
+    
+    for (int i = 0; i < 10; i++) {
+        char path[256];
+        snprintf(path, sizeof(path), "../assets/numeros/num%d.png", i); // Construct the file path
+        numbers[i] = al_load_bitmap(path); // Load the bitmap
+        if (!numbers[i]) {
+            fprintf(stderr, "Failed to load number %d!\n", i);
+            exit(-1);
+        }
     }
 }
 

@@ -5,6 +5,8 @@
 
 int al_init_graphics();
 
+void load_numbers();
+
 void cleanup_display();
 
 #endif

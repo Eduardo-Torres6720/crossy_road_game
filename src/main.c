@@ -25,7 +25,6 @@ int main (){
   }
 
   set_chicken();
-  start_scoreboard();
 
   srand(time(0));
 

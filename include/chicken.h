@@ -19,4 +19,6 @@ bool detect_colision_tree();
 
 int return_points();
 
+void verify_reset();
+
 #endif

@@ -64,8 +64,7 @@ void reset() {
     bitmapType = 2;
     num = 0;
 
-    chicken_struct.points = 0;
-    chicken_struct.step_control = 0;
+    verify_reset();
 }
 
 bool close_window() {
