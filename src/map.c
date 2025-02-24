@@ -27,15 +27,13 @@ extern Car cars[MAP_HEIGHT][3];
 extern Tree trees[MAP_HEIGHT][2];
 extern Chicken chicken_struct;
 
-int bitmapType = 2; // inicia como estrada
+int bitmapType = 1; // inicia como estrada
 int bitmapPrevious; // observa o ultimo valor do bitmapType
 int num = 0; // variavel para guardar numeros aleatorios
 
 int cam_y = 0;
 
-int map[MAP_HEIGHT] = {
-    1, 1
-};
+Floor map[MAP_HEIGHT];
 
 int dificult_progress(int limit_progress) {
     return ceil(chicken_struct.points/30)<=limit_progress ? ceil(chicken_struct.points/30) : limit_progress;
@@ -80,8 +78,8 @@ void random_map() {
     }
 
     for (i = 0; i < MAP_HEIGHT; i++) {
-        if (map[i] == 0 && num > 0) {
-            map[i] = bitmapPrevious;
+        if (map[i].bitmap_id == 0 && num > 0) {
+            map[i].bitmap_id = bitmapPrevious;
             num = num - 1;
         }
     }
@@ -92,35 +90,34 @@ void draw_map() {
     int bitmap_width = 96;  // Largura de cada bitmap
     int bitmap_height = 96; // Altura de cada bitmap
 
-    for (int y = 0; y < MAP_HEIGHT; y++) {
-        int bitmap_id = map[y]; // ID do bitmap na matriz          
-        int bitmap_y = DISPLAY_HEIGHT - ((y + 1) * bitmap_height); // Posição y do bitmap na tela
-        
+    for (int y = 0; y < MAP_HEIGHT; y++) {      
+        map[y].positiony = map[y].exist ? map[y].positiony : DISPLAY_HEIGHT - ((y + 1) * bitmap_height); // Posição y do bitmap na tela
+        map[y].exist = true;
         for (int x = 0; x < MAP_WIDTH; x++) {
             int bitmap_x = x * bitmap_width; // Posição x do bitmap na tela
 
-            if (bitmap_id == 1) { // Gramado
-                al_draw_bitmap(gram, bitmap_x, bitmap_y, 0);
+            if (map[y].bitmap_id == 1) { // Gramado
+                al_draw_bitmap(gram, bitmap_x, map[y].positiony, 0);
                 if (x == 0 || x == 8) { // Desenha árvores nas bordas do gramado
                     trees[y][x / 8].initial_x = bitmap_x;
                     trees[y][x / 8].final_x = bitmap_x + bitmap_width;
-                    trees[y][x / 8].position_y = bitmap_y;
-                    al_draw_bitmap(tree, bitmap_x, bitmap_y, 0);
+                    trees[y][x / 8].position_y = map[y].positiony;
+                    al_draw_bitmap(tree, bitmap_x, map[y].positiony, 0);
                 }
             } 
-            else if (bitmap_id == 2) { // Estrada
-                al_draw_bitmap(road, bitmap_x, bitmap_y, 0);
+            else if (map[y].bitmap_id == 2) { // Estrada
+                al_draw_bitmap(road, bitmap_x, map[y].positiony, 0);
             } 
-            else if (bitmap_id == 3) { // Água
-                al_draw_bitmap(water, bitmap_x, bitmap_y, 0);
+            else if (map[y].bitmap_id == 3) { // Água
+                al_draw_bitmap(water, bitmap_x, map[y].positiony, 0);
             }
         }
 
         // Adiciona carros nas estradas
         int random_number_car = (rand() % 3) + 1;
-        if (bitmap_id == 2 && !cars[y][0].exists) {
+        if (map[y].bitmap_id == 2 && !cars[y][0].exists) {
             for (int i = 0; i < random_number_car; i++) {
-                cars[y][i].position_y = bitmap_y;
+                cars[y][i].position_y = map[y].positiony;
                 cars[y][i].exists = true;
             }
         }
@@ -129,27 +126,33 @@ void draw_map() {
 
 
 void display_follow_player() {
-    if(chicken_struct.positiony < 96 * 4) {
-        cam_y = 96 + cam_y;
-        chicken_struct.positiony = chicken_struct.positiony + 96;
-        for(int i = 1; i < MAP_HEIGHT; i++) {
-            map[i - 1] = map[i];
-            for(int j=0; j<3; j++) {
-                cars[i - 1][j] = cars[i][j];
-                if(cars[i-1][j].exists) {
-                    cars[i-1][j].position_y = 96 + cars[i-1][j].position_y;
+    if(chicken_struct.positiony < DISPLAY_HEIGHT - 384) {
+        chicken_struct.positiony -= chicken_struct.jumpy;
+        for(int i = 0; i < MAP_HEIGHT; i++) {
+            map[i].positiony -= chicken_struct.jumpy;
+            for(int j = 0; j < 3; j++) {
+                if(cars[i][j].exists) {
+                    cars[i][j].position_y -= chicken_struct.jumpy;
                 } 
             }
-            for(int j=0; j<2; j++) {
-                trees[i-1][j] = trees[i][j];
+        }
+        printf("%d,", chicken_struct.positiony);
+        if (map[0].positiony == 900) {
+            for(int i = 1; i < MAP_HEIGHT; i++) {
+                map[i - 1] = map[i];
+                for(int j=0; j<3; j++) {
+                    cars[i - 1][j] = cars[i][j];
+                }
+                for(int j=0; j<2; j++) {
+                    trees[i-1][j] = trees[i][j];
+                }
             }
-        }
-        map[11] = 0;
-        for(int j=0; j<3; j++) {
-            cars[11][j].exists = false;
-            cars[11][j].defined_values = false;
-        }
-    } else if (chicken_struct.positiony == 96) {
-        cam_y = 0;
-    }
+            map[11].bitmap_id = 0;
+            map[11].exist = false;
+            for(int j=0; j<3; j++) {
+                cars[11][j].exists = false;
+                cars[11][j].defined_values = false;
+            }
+        }  
+    } 
 }
