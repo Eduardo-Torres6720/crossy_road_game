@@ -111,15 +111,15 @@ void draw_map() {
             }
         }
 
-        if (bitmap_id == 3) {
+        if (map[y].bitmap_id == 3) {
             if (!logs[y].exists) {
                 set_log(y);
             }
-            al_draw_bitmap(tronco, logs[y].initial_x, bitmap_y, 0);
+            al_draw_bitmap(tronco, logs[y].initial_x, map[y].positiony, 0);
             move_log(&logs[y]);
 
             // Adicionar verificação para a colisão da galinha com o tronco
-            if (chicken_struct.positiony == bitmap_y) {
+            if (chicken_struct.positiony == map[y].positiony) {
                 if (logs[y].initial_x <= chicken_struct.positionx && chicken_struct.positionx <= logs[y].initial_x + 96) {
                     // A galinha está sobre o tronco, então ela se move com ele
                     chicken_struct.positionx += logs[y].velocity;
@@ -158,24 +158,23 @@ void display_follow_player() {
         }
         printf("%d,", chicken_struct.positiony);
         if (map[0].positiony == 900) {
-    
-        for(int i = 1; i < MAP_HEIGHT; i++) {
-                map[i - 1] = map[i];
-                for(int j=0; j<3; j++) {
-                    cars[i - 1][j] = cars[i][j];
+            for(int i = 1; i < MAP_HEIGHT; i++) {
+                    map[i - 1] = map[i];
+                    for(int j=0; j<3; j++) {
+                        cars[i - 1][j] = cars[i][j];
+                    }
+                    for(int j=0; j<2; j++) {
+                        trees[i-1][j] = trees[i][j];
+                    }
+        
+                // Atualizando troncos, se houver água na linha
+                if (map[i - 1].bitmap_id == 3) { // Se for água
+                    logs[i - 1] = logs[i]; // Mover troncos para a linha anterior
                 }
-                for(int j=0; j<2; j++) {
-                    trees[i-1][j] = trees[i][j];
-                }
-    
-            // Atualizando troncos, se houver água na linha
-            if (map[i - 1] == 3) { // Se for água
-                logs[i - 1] = logs[i]; // Mover troncos para a linha anterior
             }
-        }
-    
-        // Limpar a última linha
-        map[11].bitmap_id = 0;
+        
+            // Limpar a última linha
+            map[11].bitmap_id = 0;
             map[11].exist = false;
             for(int j=0; j<3; j++) {
                 cars[11][j].exists = false;
