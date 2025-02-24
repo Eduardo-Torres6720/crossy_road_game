@@ -8,6 +8,7 @@
 #include "../include/tree.h"
 #include "../include/chicken.h"
 #include "../include/log.h"
+#include "../include/game.h"
 
 #define MAP_HEIGHT 12
 #define MAP_WIDTH 9
@@ -118,9 +119,9 @@ void draw_map() {
             al_draw_bitmap(tronco, logs[y].initial_x, map[y].positiony, 0);
             move_log(&logs[y]);
 
-            // Adicionar verificação para a colisão da galinha com o tronco
+            // Verificação da posição da galinha
             if (chicken_struct.positiony == map[y].positiony) {
-                if (logs[y].initial_x <= chicken_struct.positionx && chicken_struct.positionx <= logs[y].initial_x + 96) {
+                if (logs[y].initial_x - 40 <= chicken_struct.positionx && chicken_struct.positionx <= logs[y].initial_x + 96 - 40) {
                     // A galinha está sobre o tronco, então ela se move com ele
                     chicken_struct.positionx += logs[y].velocity;
 
@@ -130,6 +131,9 @@ void draw_map() {
                     } else if (chicken_struct.positionx > 96 * (MAP_WIDTH - 1)) {
                         chicken_struct.positionx = 96 * (MAP_WIDTH - 1);
                     }
+                } else {
+                    // A galinha caiu na água!
+                    reset();
                 }
             }
         }

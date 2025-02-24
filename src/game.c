@@ -7,6 +7,7 @@
 #include "../include/chicken.h"
 #include "../include/car.h"
 #include "../include/map.h"
+#include "../include/log.h"
 
 #define CHICKEN_JUMP 96
 #define MAP_HEIGHT 12
@@ -66,6 +67,11 @@ void reset() {
     }
     bitmapType = 1;
     num = 0;
+
+    // Resetando os troncos
+    for (int i = 0; i < NUM_LOGS; i++) {
+        logs[i].exists = false;
+    }
 
     verify_reset();
 }

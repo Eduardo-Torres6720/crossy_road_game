@@ -93,5 +93,3 @@ void colision_car(int* i, int* j) {
         *j = 0;
     }
 }
-
-
