@@ -6,6 +6,7 @@
 #include "../include/game.h"
 #include "../include/chicken.h"
 #include "../include/car.h"
+#include "../include/map.h"
 
 #define CHICKEN_JUMP 96
 #define MAP_HEIGHT 12
@@ -20,7 +21,7 @@ extern Chicken chicken_struct;
 extern Car cars[MAP_HEIGHT][3];
 extern int bitmapType;
 extern int num;
-extern int map[MAP_HEIGHT];
+extern Floor map[MAP_HEIGHT];
 
 int al_init_game() {
     //criando o timer
@@ -59,9 +60,11 @@ void reset() {
             cars[i][j].defined_values = false;
             cars[i][j].exists = false;    
         }
-        map[i] = (i < 2) ? 1 : 0;  
+        map[i].bitmap_id = 0;  
+        map[i].positiony = 0; 
+        map[i].exist = false; 
     }
-    bitmapType = 2;
+    bitmapType = 1;
     num = 0;
 
     verify_reset();
