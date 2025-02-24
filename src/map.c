@@ -40,43 +40,50 @@ int dificult_progress(int limit_progress) {
     return ceil(chicken_struct.points/30)<=limit_progress ? ceil(chicken_struct.points/30) : limit_progress;
 }
 
+// Gera um mapa aleatório baseado na dificuldade e tipos de terreno
 void random_map() {
     int i;
 
+    // Se o tipo de bitmap for 1 (grama) e num for 0, gera um novo tipo de terreno
     if (bitmapType == 1 && num == 0) { 
-        int progress_gram = dificult_progress(4);
-        num = (rand() % 4) + 5-progress_gram;
-        bitmapPrevious = bitmapType;
-        bitmapType = 2; 
+        int progress_gram = dificult_progress(4); // Calcula dificuldade
+        num = (rand() % 4) + 5 - progress_gram; // Define a quantidade de blocos
+        bitmapPrevious = bitmapType; // Armazena o bitmap anterior
+        bitmapType = 2; // Muda para estrada
         fprintf(stderr, "%da", num);
-    } else if(bitmapType == 2 && num == 0) {
+    } 
+    // Se o bitmap for 2 (estrada) e num for 0, decide próximo tipo de terreno
+    else if(bitmapType == 2 && num == 0) {
         int progress_road = dificult_progress(6);
-        num = (rand() % 4)+1+progress_road;
+        num = (rand() % 4) + 1 + progress_road;
         int chance = rand() % 4;
 
-        if (chance == 0) { 
+        if (chance == 0) { // Pequena chance de mudar para rio
             int progress_river = dificult_progress(3);
             num = (rand() % 2) + 1 + progress_river;
             bitmapPrevious = bitmapType;
             bitmapType = 3;
-        } else { 
+        } else { // Caso contrário, volta para grama
             int progress_road = dificult_progress(6);
-            num = (rand() % 4)+1+progress_road;
+            num = (rand() % 4) + 1 + progress_road;
             bitmapPrevious = bitmapType;
             bitmapType = 1; 
         }
         fprintf(stderr, "%db", num);
     }
+    // Se o bitmap for 3 (rio) e num for 0, volta para grama
     else if (bitmapType == 3 && num == 0) { 
-        num = (rand() % 4) + 1 >= 2 ? 2 : 1;
+        num = (rand() % 4) + 1 >= 2 ? 2 : 1; // Define duração do rio
         bitmapPrevious = bitmapType;
         bitmapType = 1; 
     }
 
+    // Evita a sequência rio -> grama
     if (bitmapType == 3 && bitmapPrevious == 1) {
         bitmapType = 1;
     }
 
+    // Preenche o mapa com o bitmap anterior
     for (i = 0; i < MAP_HEIGHT; i++) {
         if (map[i].bitmap_id == 0 && num > 0) {
             map[i].bitmap_id = bitmapPrevious;
@@ -85,33 +92,38 @@ void random_map() {
     }
 }
 
+// Desenha o mapa na tela
 void draw_map() {
-    int bitmap_width = 96;
-    int bitmap_height = 96;
+    int bitmap_width = 96; // Largura dos bitmaps
+    int bitmap_height = 96; // Altura dos bitmaps
 
-    for (int y = 0; y < MAP_HEIGHT; y++) {      
-        map[y].positiony = map[y].exist ? map[y].positiony : DISPLAY_HEIGHT - ((y + 1) * bitmap_height); // Posição y do bitmap na tela
-        map[y].exist = true;
+    for (int y = 0; y < MAP_HEIGHT; y++) {  
+        // Define a posição Y do bitmap na tela se ele ainda não existir
+        map[y].positiony = map[y].exist ? map[y].positiony : DISPLAY_HEIGHT - ((y + 1) * bitmap_height);
+        map[y].exist = true; // Marca a existência do mapa nessa posição
+
         for (int x = 0; x < MAP_WIDTH; x++) {
-            int bitmap_x = x * bitmap_width;
+            int bitmap_x = x * bitmap_width; // Posição X do bitmap
 
-            if (map[y].bitmap_id == 1) { // Gramado
+            if (map[y].bitmap_id == 1) { // Caso seja gramado
                 al_draw_bitmap(gram, bitmap_x, map[y].positiony, 0);
-                if (x == 0 || x == 8) { // Desenha árvores nas bordas do gramado
+                
+                if (x == 0 || x == 8) { // Desenha árvores nas bordas
                     trees[y][x / 8].initial_x = bitmap_x;
                     trees[y][x / 8].final_x = bitmap_x + bitmap_width;
                     trees[y][x / 8].position_y = map[y].positiony;
                     al_draw_bitmap(tree, bitmap_x, map[y].positiony, 0);
                 }
             } 
-            else if (map[y].bitmap_id == 2) { // Estrada
+            else if (map[y].bitmap_id == 2) { // Caso seja estrada
                 al_draw_bitmap(road, bitmap_x, map[y].positiony, 0);
             } 
-            else if (map[y].bitmap_id == 3) { // Água
+            else if (map[y].bitmap_id == 3) { // Caso seja água
                 al_draw_bitmap(water, bitmap_x, map[y].positiony, 0);
             }
         }
 
+        // Se for um rio, gerencia os troncos
         if (map[y].bitmap_id == 3) {
             if (!logs[y].exists) {
                 set_log(y);
@@ -119,25 +131,26 @@ void draw_map() {
             al_draw_bitmap(tronco, logs[y].initial_x, map[y].positiony, 0);
             move_log(&logs[y]);
 
-            // Verificação da posição da galinha
+            // Verifica se a galinha está sobre a água
             if (chicken_struct.positiony == map[y].positiony) {
                 if (logs[y].initial_x - 40 <= chicken_struct.positionx && chicken_struct.positionx <= logs[y].initial_x + 96 - 40) {
-                    // A galinha está sobre o tronco, então ela se move com ele
+                    // A galinha está sobre o tronco e se move com ele
                     chicken_struct.positionx += logs[y].velocity;
 
-                    // Impedir que a galinha ultrapasse a borda
+                    // Evita que a galinha saia da tela
                     if (chicken_struct.positionx < 0) {
                         chicken_struct.positionx = 0;
                     } else if (chicken_struct.positionx > 96 * (MAP_WIDTH - 1)) {
                         chicken_struct.positionx = 96 * (MAP_WIDTH - 1);
                     }
                 } else {
-                    // A galinha caiu na água!
+                    // A galinha caiu na água, reinicia o jogo
                     reset();
                 }
             }
         }
 
+        // Cria carros aleatoriamente na estrada
         int random_number_car = (rand() % 3) + 1;
         if (map[y].bitmap_id == 2 && !cars[y][0].exists) {
             for (int i = 0; i < random_number_car; i++) {
@@ -147,7 +160,6 @@ void draw_map() {
         }
     }
 }
-
 
 void display_follow_player() {
     if(chicken_struct.positiony < DISPLAY_HEIGHT - 384) {
