@@ -17,6 +17,7 @@ Chicken chicken_struct;
 bool key[ALLEGRO_KEY_MAX] = {false};
 
 bool key_pressed = false;
+bool movement = false;
 
 void update_points() {
     if (chicken_struct.step_control > chicken_struct.points) {
@@ -32,13 +33,12 @@ void set_chicken() {
     chicken_struct.positiony = DISPLAY_HEIGHT - chicken_height;
     chicken_struct.movement_performed_x = 0;
     chicken_struct.movement_performed_y = 0;
+    chicken_struct.jumpx = 0;
+    chicken_struct.jumpy = 0;
     chicken_struct.sprite_chicken = chicken;
 }
 
 void moviment_chicken() {
-
-    chicken_struct.movement_performed_x = 0;
-    chicken_struct.movement_performed_y = 0;
 
     bool preview_positionx_right = (chicken_struct.positionx + CHICKEN_JUMP) >= 864; 
     bool preview_positionx_left = (chicken_struct.positionx - CHICKEN_JUMP) < 0;
@@ -54,19 +54,16 @@ void moviment_chicken() {
         // Mover o sprite com base nas teclas pressionadas
 
 
-
-        if (key[ALLEGRO_KEY_UP] && !key_pressed) {
-            chicken_struct.positiony -= CHICKEN_JUMP;  // Move para cima
+        if (key[ALLEGRO_KEY_UP] && !key_pressed && !movement) {
+            chicken_struct.movement_performed_y = -CHICKEN_JUMP;
             key_pressed = true;
             chicken_struct.sprite_chicken = al_load_bitmap("../assets/parado_costa.png");
-            chicken_struct.movement_performed_y = -CHICKEN_JUMP;
 
             if (!detect_colision_tree()) {
                 chicken_struct.step_control++; // Incrementa o step_control pq vai funcionar, confia
             }
 
-        } else if (key[ALLEGRO_KEY_DOWN] && !key_pressed && !preview_positiony_down) {
-            chicken_struct.positiony += CHICKEN_JUMP;  // Move para baixo
+        } else if (key[ALLEGRO_KEY_DOWN] && !key_pressed && !preview_positiony_down && !movement) {
             key_pressed = true;
             chicken_struct.sprite_chicken = al_load_bitmap("../assets/parado_frente.png");
             chicken_struct.movement_performed_y = CHICKEN_JUMP;
@@ -75,18 +72,15 @@ void moviment_chicken() {
                 chicken_struct.step_control--; // Decrementa o step_control pq vai funcionar, confia
             }
 
-        } else if (key[ALLEGRO_KEY_LEFT] && !key_pressed && !preview_positionx_left) {
-            chicken_struct.positionx -= CHICKEN_JUMP;  // Move para a esquerda
+        } else if (key[ALLEGRO_KEY_LEFT] && !key_pressed && !preview_positionx_left && !movement) {
             key_pressed = true;
             chicken_struct.movement_performed_x = -CHICKEN_JUMP;
             chicken_struct.sprite_chicken = al_load_bitmap("../assets/parado_lado.png");
-        } else if (key[ALLEGRO_KEY_RIGHT] && !key_pressed && !preview_positionx_right) {
-            chicken_struct.positionx += CHICKEN_JUMP;  // Move para a direita
+        } else if (key[ALLEGRO_KEY_RIGHT] && !key_pressed && !preview_positionx_right && !movement) {
             key_pressed = true;
             chicken_struct.movement_performed_x = CHICKEN_JUMP;
             chicken_struct.sprite_chicken = al_load_bitmap("../assets/parado_lado_direito.png");
         }
-
         update_points(); // Isso vai atualizar a pontuação. Tenha fé em Deus!
 
     }
@@ -95,6 +89,24 @@ void moviment_chicken() {
 
 int return_points() {
     return chicken_struct.points;
+}
+
+void fluid_movement() {
+    if(chicken_struct.movement_performed_x != 0) {
+        chicken_struct.jumpx = chicken_struct.movement_performed_x>0 ? CHICKEN_JUMP/6 : -CHICKEN_JUMP/6;
+        chicken_struct.movement_performed_x -= chicken_struct.jumpx;
+        chicken_struct.positionx += chicken_struct.jumpx;
+        movement = true;
+    } else if (chicken_struct.movement_performed_y != 0) {
+        chicken_struct.jumpy = chicken_struct.movement_performed_y>0 ? CHICKEN_JUMP/6 : -CHICKEN_JUMP/6;
+        chicken_struct.movement_performed_y -= chicken_struct.jumpy;
+        chicken_struct.positiony += chicken_struct.jumpy;
+        movement = true;
+    } else {
+        chicken_struct.jumpx = 0;
+        chicken_struct.jumpy = 0;
+        movement = false;
+    }
 }
 
 void verify_reset() {

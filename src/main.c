@@ -35,8 +35,9 @@ int main (){
     handle_car();
 
     moviment_chicken();
-
+    
     colision_tree();
+    fluid_movement();
     
     display_follow_player();
 
