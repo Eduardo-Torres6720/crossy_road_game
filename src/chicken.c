@@ -16,9 +16,10 @@ Chicken chicken_struct;
 
 bool key[ALLEGRO_KEY_MAX] = {false};
 
-bool key_pressed = false;
-bool movement = false;
+bool key_pressed = false; // Verifica se uma tecla ta pressionada
+bool movement = false; // Verifica se a galinha ta se movimentando
 
+// Atualiza os pontos verificando se é um ponto valido
 void update_points() {
     if (chicken_struct.step_control > chicken_struct.points) {
         chicken_struct.points = chicken_struct.step_control;
@@ -53,7 +54,7 @@ void moviment_chicken() {
     } else if (ev.type == ALLEGRO_EVENT_TIMER) {
         // Mover o sprite com base nas teclas pressionadas
 
-
+        // movimento  da galinha
         if (key[ALLEGRO_KEY_UP] && !key_pressed && !movement) {
             chicken_struct.movement_performed_y = -CHICKEN_JUMP;
             key_pressed = true;
@@ -69,7 +70,7 @@ void moviment_chicken() {
             chicken_struct.movement_performed_y = CHICKEN_JUMP;
 
             if (!detect_colision_tree()) {
-                chicken_struct.step_control--; // Decrementa o step_control pq vai funcionar, confia
+                chicken_struct.step_control--; // Decrementa o step_control pq vai funciona, confia
             }
 
         } else if (key[ALLEGRO_KEY_LEFT] && !key_pressed && !preview_positionx_left && !movement) {
@@ -91,6 +92,7 @@ int return_points() {
     return chicken_struct.points;
 }
 
+// Faz a galinha andar em partes (16px)
 void fluid_movement() {
     if(chicken_struct.movement_performed_x != 0) {
         chicken_struct.jumpx = chicken_struct.movement_performed_x>0 ? CHICKEN_JUMP/6 : -CHICKEN_JUMP/6;

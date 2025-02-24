@@ -19,13 +19,14 @@ ALLEGRO_BITMAP *tronco;
 
 int positionx;
 int positiony;
-
+// iniciando sistemas de graficos
 int al_init_graphics() {
     if(!al_init()) {
         return 1;
     } else if(!al_init_image_addon()) {
         return 1;
-    } else {
+    } else { 
+        // rederizando os assets
         display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
         chicken = al_load_bitmap("../assets/parado_costa.png");
         gram = al_load_bitmap("../assets/grama.png");
@@ -48,15 +49,15 @@ void load_numbers() {
     
     for (int i = 0; i < 10; i++) {
         char path[256];
-        snprintf(path, sizeof(path), "../assets/numeros/num%d.png", i); // Construct the file path
-        numbers[i] = al_load_bitmap(path); // Load the bitmap
+        snprintf(path, sizeof(path), "../assets/numeros/num%d.png", i); // Construir o caminho do arquivo
+        numbers[i] = al_load_bitmap(path); // Carregar o bitmap
         if (!numbers[i]) {
             fprintf(stderr, "Failed to load number %d!\n", i);
             exit(-1);
         }
     }
 }
-
+// Destruindo os assets
 void cleanup_display() {
     al_destroy_bitmap(chicken);
     al_destroy_display(display);
